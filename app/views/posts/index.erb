@@ -1,0 +1,11 @@
+<% if flash[:error] %>
+    <%= flash[:error] %>
+<% end %>
+
+<% @posts.each do |p| %>
+    <% if current_user == p.user %>
+        <a href="/posts/<%=p.id%>"> <p>Title: <%=p.title%> </p>
+    <% end %>
+<% end %>    
+
+        

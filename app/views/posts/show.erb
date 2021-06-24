@@ -1,0 +1,10 @@
+<p> Country: <%=@post.country%></p>
+<p> Title: <%= @post.title %></p>
+<p> Content: <%= @post.content %></p>
+
+<button onclick="window.location.href='<%=@post.id%>/edit'">Edit Post</button>
+
+<form method="post" action="/posts/<%= @post.id %>">
+  <input id="hidden" type="hidden" name="_method" value="DELETE">
+  <input type="submit" value="Delete">
+</form>
