@@ -1,6 +1,7 @@
 class PostsController < ApplicationController
     # show all the post by the users
     get '/posts' do
+        redirect_if_not_logged
         @posts = Post.all
         erb :'posts/index'
     end
@@ -19,20 +20,23 @@ class PostsController < ApplicationController
 
     get '/posts/:id' do
         get_post
+        redirect_if_not_logged
         redirect_if_not_authorized
         erb :'posts/show'
     end
 
     get '/posts/:id/edit' do 
         get_post
+        redirect_if_not_logged
         redirect_if_not_authorized
         erb :'posts/edit'
     end
 
     patch '/posts/:id' do
         get_post
+        redirect_if_not_logged
         redirect_if_not_authorized
-        @post.update(title: params[:title], content: params[:content])
+        @post.update(title: params[:title], content: params[:content], country: params[:country])
         redirect to "/posts/#{@post.id}"
     end
 
@@ -53,6 +57,13 @@ private
         if @post.user != current_user
             flash[:error] = "You are not the owner of this post"
             redirect '/posts'
+        end
+    end
+
+    def redirect_if_not_logged
+        if !logged_in?
+            flash[:error] = "You are not logged in!!!"
+            redirect '/login'
         end
     end
 
